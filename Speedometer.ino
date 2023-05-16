@@ -7,12 +7,13 @@
 
 void setup()
 {
-  #define SER_CON 2
-  #define CLK_CON 3
+  #define SER_CON 2   // Binary sequence is sent through this pin to be shifted in to shift register
+  #define CLK_CON 3   // Controls when shift register shifts
 
   pinMode(SER_CON, OUTPUT);
   pinMode(CLK_CON, OUTPUT);
 
+  // These pins control which digits light up. 0 means digit is illuminated
   #define FirstLetter 7
   #define SecondLetter 8
   #define ThirdLetter 9
@@ -23,6 +24,7 @@ void setup()
   pinMode(ThirdLetter, OUTPUT);
   pinMode(FourthLetter, OUTPUT);
 
+  // Binary sequences controlling which segments light up. There is a unique sequence for every number
   #define NumZero 0b00111111
   #define NumOne 0b00000110
   #define NumTwo 0b01011011
@@ -49,7 +51,7 @@ void setup()
 
 int analogInput;
 volatile long encoderValue = 0;
-int intervalLength = 250;      //1 second "refresh rate"
+int intervalLength = 250;      //quarter second "refresh rate"
 long previousMillis = millis();
 long currentMillis = 0;
 int rpm = 0;
@@ -61,8 +63,8 @@ void loop()
   if (currentMillis - previousMillis > intervalLength)
   {
     previousMillis = currentMillis;
-    rpm = (float)(encoderValue * 60 * 4 / ENC_COUNT_REV);
-    mph = rpm * 0.047599888690754;
+    rpm = (float)(encoderValue * 60 * 4 / ENC_COUNT_REV);   // calculate speed in rpm
+    mph = rpm * 0.047599888690754;                          // calculate speed in mph
     encoderValue = 0;
   }  
 
@@ -74,6 +76,7 @@ void loop()
   int CheckDigit = 0;
   for (int DigitIndex = 0; DigitIndex < 4; ++DigitIndex)
   {
+    // All digits are initialized as being turned off
     digitalWrite(FirstLetter, 1);
     digitalWrite(SecondLetter, 1);
     digitalWrite(ThirdLetter, 1);
@@ -121,6 +124,7 @@ void loop()
       shift_out(NumNine);
     }
 
+    // one digit is displayed at a time
     if (DigitIndex == 0)
     {
       digitalWrite(FourthLetter, 0);
@@ -146,6 +150,7 @@ void loop()
 // SUBROUTINES BELOW
 // ---------------------------------------------------
 
+// Shifts out 8-bit value with shift register
 void shift_out(int data)
 {
   int i;
