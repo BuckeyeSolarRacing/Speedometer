@@ -7,17 +7,17 @@
 
 void setup()
 {
-  #define SER_CON 2   // Binary sequence is sent through this pin to be shifted in to shift register
-  #define CLK_CON 3   // Controls when shift register shifts
+  #define SER_CON 5   // Binary sequence is sent through this pin to be shifted in to shift register
+  #define CLK_CON 4   // Controls when shift register shifts
 
   pinMode(SER_CON, OUTPUT);
   pinMode(CLK_CON, OUTPUT);
 
   // These pins control which digits light up. 0 means digit is illuminated
-  #define FirstLetter 7
-  #define SecondLetter 8
-  #define ThirdLetter 9
-  #define FourthLetter 10
+  #define FirstLetter PB13
+  #define SecondLetter PB14
+  #define ThirdLetter 2
+  #define FourthLetter 3
 
   pinMode(FirstLetter, OUTPUT);
   pinMode(SecondLetter, OUTPUT);
@@ -36,10 +36,10 @@ void setup()
   #define NumEight 0b01111111
   #define NumNine 0b01100111
 
-  #define ENC_COUNT_REV 48   //CHANGE TO 48 pulses per rotation
-  #define ENC_IN 13          //Maybe want to change to a GPIO port without an LED?
+  #define ENC_COUNT_REV 48   // CHANGE TO 48 pulses per rotation
+  #define ENC_IN 15          // PWM motor speed input
 
-  pinMode(ENC_IN, INPUT_PULLDOWN);    //Default value is 0
+  pinMode(ENC_IN, INPUT_PULLDOWN);    // Default value is 0
   attachInterrupt(digitalPinToInterrupt(ENC_IN), updateEncoder, RISING);
 
   Serial.begin(9600);
@@ -51,7 +51,7 @@ void setup()
 
 int analogInput;
 volatile long encoderValue = 0;
-int intervalLength = 250;      //quarter second "refresh rate"
+int intervalLength = 250;        //quarter second "refresh rate"
 long previousMillis = millis();
 long currentMillis = 0;
 int rpm = 0;
