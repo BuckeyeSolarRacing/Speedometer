@@ -14,8 +14,8 @@ void setup()
   pinMode(CLK_CON, OUTPUT);
 
   // These pins control which digits light up. 0 means digit is illuminated
-  #define FirstLetter PB13
-  #define SecondLetter PB14
+  #define FirstLetter 0
+  #define SecondLetter 1
   #define ThirdLetter 2
   #define FourthLetter 3
 
@@ -37,7 +37,7 @@ void setup()
   #define NumNine 0b01100111
 
   #define ENC_COUNT_REV 48   // CHANGE TO 48 pulses per rotation
-  #define ENC_IN 15          // PWM motor speed input
+  #define ENC_IN 6           // PWM motor speed input
 
   pinMode(ENC_IN, INPUT_PULLDOWN);    // Default value is 0
   attachInterrupt(digitalPinToInterrupt(ENC_IN), updateEncoder, RISING);
